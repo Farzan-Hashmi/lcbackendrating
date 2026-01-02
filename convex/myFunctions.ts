@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { query, mutation, action, internalMutation } from "./_generated/server";
+import { query, action, internalMutation } from "./_generated/server";
 import { api, internal } from "./_generated/api";
 
 // Write your Convex functions in any file inside this directory (`convex`).
@@ -175,7 +175,7 @@ export const getFilteredQuestions = query({
 });
 
 export const updateMochiTable = action({
-  handler: async (ctx, args) => {
+  handler: async (ctx) => {
     const MOCHI_API_KEY = process.env.MOCHI_API_KEY;
     if (!MOCHI_API_KEY) {
       throw new Error("MOCHI_API_KEY environment variable is not set");
@@ -282,7 +282,7 @@ export const updateQuestionSolvedStatus = internalMutation({
 });
 
 export const markAllDoneFalse = internalMutation({
-  handler: async (ctx, args) => {
+  handler: async (ctx) => {
     const question_ids = await ctx.db.query("lcquestionssolved").collect();
     for (const question of question_ids) {
       await ctx.db.patch("lcquestionssolved", question._id, { solved: false });
@@ -335,7 +335,7 @@ export const updateQuestionBank = action({
   returns: v.object({
     totalFetched: v.number(),
   }),
-  handler: async (ctx, args) => {
+  handler: async (ctx) => {
     const URL = "https://zerotrac.github.io/leetcode_problem_rating/data.json";
 
     // Fetch all questions from the API
