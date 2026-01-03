@@ -11,7 +11,7 @@ crons.interval(
 
 crons.interval(
   "updateMochiTable",
-  { minutes: 1 },
+  { minutes: 5 },
   api.myFunctions.updateMochiTable,
   {},
 );
