@@ -9,9 +9,10 @@ crons.interval(
   api.myFunctions.updateQuestionBank,
 );
 
+// Daily fallback sync - use GET/POST to /syncMochi for instant updates!
 crons.interval(
   "updateMochiTable",
-  { minutes: 5 },
+  { hours: 24 },
   api.myFunctions.updateMochiTable,
   {},
 );

@@ -14,10 +14,12 @@ export default defineSchema({
     question_rating: v.number(),
     leetcode_url: v.string(),
     solved: v.boolean(),
-  }),
+  })
+    .index("by_question_id", ["question_id"])
+    .index("by_solved", ["solved"]),
 
   mochicards: defineTable({
     card_id: v.string(),
     content: v.string(),
-  }),
+  }).index("by_card_id", ["card_id"]),
 });

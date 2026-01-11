@@ -9,10 +9,10 @@ export const addCard = internalMutation({
   args: { cardId: v.string(), cardText: v.string() },
   returns: v.null(),
   handler: async (ctx, args) => {
-    // Check if card already exists by querying directly
+    // Check if card already exists using index (much faster!)
     const existing = await ctx.db
       .query("mochicards")
-      .filter((q) => q.eq(q.field("card_id"), args.cardId))
+      .withIndex("by_card_id", (q) => q.eq("card_id", args.cardId))
       .first();
 
     if (existing) {
@@ -53,7 +53,7 @@ export const getUnsolvedQuestionTitlesAndIds = query({
   handler: async (ctx) => {
     const data = await ctx.db
       .query("lcquestionssolved")
-      .filter((q) => q.eq(q.field("solved"), false))
+      .withIndex("by_solved", (q) => q.eq("solved", false))
       .collect();
 
     console.log("Unsolved questions");
@@ -304,10 +304,10 @@ export const upsertQuestion = internalMutation({
   },
   returns: v.null(),
   handler: async (ctx, args) => {
-    // Check if question already exists
+    // Check if question already exists using index (much faster!)
     const existing = await ctx.db
       .query("lcquestionssolved")
-      .filter((q) => q.eq(q.field("question_id"), args.question_id))
+      .withIndex("by_question_id", (q) => q.eq("question_id", args.question_id))
       .first();
 
     if (!existing) {
